@@ -1,44 +1,48 @@
 {
   "expo": {
-    "name": "NHAIHackathon",
+    "name": "DatalakeOfflineAuth",
     "slug": "NHAIHackathon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "nhaihackathon",
-    "userInterfaceStyle": "automatic",
-    "ios": {
-      "icon": "./assets/expo.icon"
-    },
+    "userInterfaceStyle": "dark",
     "android": {
+      "package": "com.anonymous.NHAIHackathon",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0a0a0f",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+    "ios": {
+      "bundleIdentifier": "com.anonymous.NHAIHackathon",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Camera required for face recognition and liveness detection",
+        "NSLocationWhenInUseUsageDescription": "Location required for GPS geofence verification",
+        "NSLocationAlwaysUsageDescription": "Location required for GPS geofence verification"
+      }
     },
     "plugins": [
-      "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#0a0a0f",
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
           }
         }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    }
+      ],
+      "react-native-fast-tflite",
+      "onnxruntime-react-native"
+    ]
   }
 }
