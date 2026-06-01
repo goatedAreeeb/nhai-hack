@@ -1,7 +1,7 @@
 // App.tsx — DatalakeOfflineAuth Phase 1 Test Harness & Camera/Face Detector Validation
 import React, { useEffect, useState, useRef } from 'react';
 
-import { ScrollView, Text, StyleSheet, View, Dimensions } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { registerRootComponent } from 'expo';
 import { useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
@@ -10,6 +10,7 @@ import { Camera, Face } from 'react-native-vision-camera-face-detector';
 import { databaseService } from './src/services/DatabaseService';
 import { useAppStore } from './src/store/useAppStore';
 import { initAmplify } from './src/config/awsConfig';
+import { gpsService, GpsResult } from './src/services/GpsService';
 
 type CheckState = {
   label: string;
@@ -30,6 +31,7 @@ export default function App(): React.JSX.Element {
   const [log, setLog] = useState<string[]>(['DatalakeOfflineAuth — Phase 1 Test Harness', '']);
   const { hasPermission, requestPermission } = useCameraPermission();
   const [detectedFaces, setDetectedFaces] = useState<Face[]>([]);
+  const [gpsResult, setGpsResult] = useState<GpsResult | null>(null);
   const lastUpdateRef = useRef<number>(0);
   const device = useCameraDevice('front');
 
@@ -171,6 +173,33 @@ return (
               </View>
             </View>
           ))}
+        </View>
+
+        {/* GPS Test Button */}
+        <View style={s.permBox}>
+          <TouchableOpacity onPress={async () => {
+            addLog('Testing GPS...');
+            try {
+              const res = await gpsService.checkGeofence();
+              setGpsResult(res);
+              addLog(`GPS Result: Latitude: ${res.latitude} Longitude: ${res.longitude}`);
+              console.log('GPS_TEST_RESULT:', JSON.stringify(res));
+            } catch (e: any) {
+              addLog(`GPS Error: ${e.message}`);
+              console.error('GPS_TEST_ERROR:', e.message);
+            }
+          }} style={{ backgroundColor: '#4ade80', padding: 10, borderRadius: 8, alignItems: 'center' }}>
+            <Text style={{ color: '#000', fontWeight: 'bold' }}>Check GPS</Text>
+          </TouchableOpacity>
+          {gpsResult && (
+            <View style={{ marginTop: 10 }}>
+              <Text style={s.metricText}>Latitude: {gpsResult.latitude}</Text>
+              <Text style={s.metricText}>Longitude: {gpsResult.longitude}</Text>
+              <Text style={s.metricText}>Accuracy: {gpsResult.accuracy}m</Text>
+              <Text style={s.metricText}>Inside Geofence: {gpsResult.isInsideGeofence ? 'YES' : 'NO'}</Text>
+              {gpsResult.failReason && <Text style={s.metricText}>Reason: {gpsResult.failReason}</Text>}
+            </View>
+          )}
         </View>
 
         {/* Camera Permission Info */}

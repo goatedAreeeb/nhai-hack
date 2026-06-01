@@ -1,7 +1,4 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
-node_modules/
+# DatalakeOfflineAuth .gitignore
 
 # Expo
 .expo/
@@ -9,35 +6,36 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Native
-.kotlin/
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+# Node
+node_modules/
 
-# Metro
-.metro-health-check*
+# AWS Amplify — NEVER commit (contains API keys, URLs)
+src/aws-exports.js
+amplify/#current-cloud-backend/
+amplify/team-provider-info.json
+amplify/.config/
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+# AI Models — too large for GitHub (upload to Google Drive for submission)
+assets/models/*.tflite
+assets/models/*.onnx
 
-# macOS
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
 .DS_Store
-*.pem
+Thumbs.db
 
-# local env files
-.env*.local
+# IDE
+.vscode/
+.idea/
 
-# typescript
-*.tsbuildinfo
-
-example
-
-# generated native folders
-/ios
-/android
+# Build artifacts
+android/build/
+ios/build/
+android/.gradle/
+android/app/build/
+*.keystore
+!debug.keystore
