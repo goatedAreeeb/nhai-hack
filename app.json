@@ -42,7 +42,8 @@
         }
       ],
       "react-native-fast-tflite",
-      "onnxruntime-react-native"
+      "onnxruntime-react-native",
+      "expo-asset"
     ]
   }
 }

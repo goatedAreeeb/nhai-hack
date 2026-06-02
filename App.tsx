@@ -1,7 +1,7 @@
 // App.tsx — DatalakeOfflineAuth Phase 1 Test Harness & Camera/Face Detector Validation
 import React, { useEffect, useState, useRef } from 'react';
 
-import { ScrollView, Text, StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { registerRootComponent } from 'expo';
 import { useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
@@ -11,6 +11,7 @@ import { databaseService } from './src/services/DatabaseService';
 import { useAppStore } from './src/store/useAppStore';
 import { initAmplify } from './src/config/awsConfig';
 import { gpsService, GpsResult } from './src/services/GpsService';
+import { runTfliteSmokeTest } from './src/services/TfliteSmokeTest';
 
 type CheckState = {
   label: string;
@@ -201,6 +202,19 @@ return (
             </View>
           )}
         </View>
+        {/* TFLite Smoke Test Button */}
+        <View style={s.permBox}>
+          <TouchableOpacity onPress={() => {
+            console.log('[TFLITE_SMOKE] STEP_1_ENTERED');
+            Alert.alert(
+              'TFLITE_SMOKE',
+              'STEP_1_ENTERED'
+            );
+          }} style={{ backgroundColor: '#facc15', padding: 10, borderRadius: 8, alignItems: 'center' }}>
+            <Text style={{ color: '#000', fontWeight: 'bold' }}>Run TFLite Smoke Test</Text>
+          </TouchableOpacity>
+        </View>
+
 
         {/* Camera Permission Info */}
         <View style={s.permBox}>
